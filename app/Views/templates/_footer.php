@@ -190,7 +190,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
   <!-- Java Script
   ================================================== -->
-  <script src="<?= base_url(); ?>/js/jquery-3.2.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
   <script src="<?= base_url(); ?>/js/plugins.js"></script>

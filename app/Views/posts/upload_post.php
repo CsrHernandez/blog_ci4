@@ -1,3 +1,5 @@
+<!-- formulario para el post
+================================================== -->
 <div class="s-featured">
     <div class="row">
         <form class="" action="" method="post" enctype="multipart/form-data">
@@ -7,7 +9,7 @@
             <div class="input-group">
                 <input placeholder="Intro" type="text" name="intro" id="intro">
             </div>
-            <textarea name="content" rows="8" cols="80"></textarea>
+            <textarea name="content" id="summernote" rows="8" cols="80"></textarea>
             <select class="" name="category">
                 <?php foreach ($categories as $category): ?>
                     <option value="<?= $category['id']; ?>"><?= $category['name']; ?></option>
@@ -25,3 +27,10 @@
         </form>
     </div>
 </div>
+<!-- scropt para seleccion de summernote
+================================================== -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#summernote').summernote();
+    });
+</script>
