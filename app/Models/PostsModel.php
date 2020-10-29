@@ -19,9 +19,4 @@ class PostsModel extends Model
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
 
-    function __construct()
-    {
-        // code...
-    }
-
 }

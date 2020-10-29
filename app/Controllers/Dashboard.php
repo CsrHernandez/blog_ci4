@@ -2,16 +2,24 @@
 
 use App\Models\UsersModel;
 use App\Models\PostsModel;
+use App\Models\CategoriesModel;
 
 class Dashboard extends BaseController
 {
 	private $usersModel = null;
 	private $postsModel = null;
+	private $validation = null;
+	private $categories = null;
+	private $categoriesModel = null;
 
 	public function __construct()
 	{
-		$this->usersModel = new UsersModel();
-		$this->postsModel = new PostsModel();
+		helper(['url', 'form']);
+		$this->usersModel = new UsersModel;
+		$this->postsModel = new PostsModel;
+		$this->categoriesModel = new CategoriesModel;
+		$this->validation = \Config\Services::validation();
+		$this->categories = $this->categoriesModel->select(['id', 'name'])->findAll();
 	}
 
 	public function index()
@@ -45,6 +53,23 @@ class Dashboard extends BaseController
 		echo "<pre>";
 		print_r($id);
 		echo "</pre>";
+	}
+
+	public function uploadPost()
+	{
+		$this->validation->setRule('banner', 'Banner', 'required');
+
+		if ($_POST) {
+			$file = $this->request->getFile('banner');
+			$fileName = $file->getRandomName();
+			if ($file->isValid()) {
+				$file->move(WRITEPATH.'uploads', $fileName);
+				echo 'Archivo subido con exito';
+			} else {
+				echo 'No vailid';
+			}
+		}
+		echo view('posts/upload_post');
 	}
 
 	//--------------------------------------------------------------------
