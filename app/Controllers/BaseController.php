@@ -43,7 +43,7 @@ class BaseController extends Controller
 		// $this->session = \Config\Services::session();
 	}
 
-	protected function loadViews($view=null,$data)
+	protected function loadViews($view=null,$data=[])
 	{
 		echo view('templates/_header',$data);
 		echo view($view,$data);
