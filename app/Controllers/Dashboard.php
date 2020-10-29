@@ -66,17 +66,17 @@ class Dashboard extends BaseController
 		if ($_POST) {
 			if (!$this->validation->withRequest($this->request)->run()) {
 				print_r($this->validation->getErrors());
-			}
-			$file = $this->request->getFile('banner');
-			$fileName = $file->getRandomName();
-			if ($file->isValid()) {
-				$file->move(WRITEPATH.'uploads', $fileName);
-				echo 'Archivo subido con exito';
 			} else {
-				echo 'No vailid';
+				$file = $this->request->getFile('banner');
+				$fileName = $file->getRandomName();
+				if ($file->isValid()) {
+					$file->move(WRITEPATH.'uploads', $fileName);
+					echo 'Archivo subido con exito';
+				}
 			}
+
 		}
-		echo view('posts/upload_post', $data);
+		$this->loadViews('posts/upload_post', $data);
 	}
 
 	//--------------------------------------------------------------------
