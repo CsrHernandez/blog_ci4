@@ -57,9 +57,16 @@ class Dashboard extends BaseController
 
 	public function uploadPost()
 	{
-		$this->validation->setRule('banner', 'Banner', 'required');
+		$data['categories'] = $this->categories;
+		$this->validation->setRules(
+			['title' => 'required', 'intro' => 'required', 'content' => 'required|min_length[50]', 'category' => 'required', 'tags' => 'required', 'banner' => 'required|is_image',],
+			['title' => ['required' => 'Es necesario tener un titulo'],	'intro' => ['required' => 'Es necesaro un intro'], 'content' => ['required' => 'Es necesario un contenido', 'min_length' => 'El contenido debe ser de minimo 50 caracteres'], 'category' => ['required' => 'Por favor escoga una categoria'], 'tags' => ['required' => 'Es necesario una etiqueta por minimo'], 'banner' => ['required' => 'Es necesario una imagen para el post', 'is_image' => 'Debe subir un archivo de imagen para el banner']]
+		);
 
 		if ($_POST) {
+			if (!$this->validation->withRequest($this->request)->run()) {
+				print_r($this->validation->getErrors());
+			}
 			$file = $this->request->getFile('banner');
 			$fileName = $file->getRandomName();
 			if ($file->isValid()) {
@@ -69,7 +76,7 @@ class Dashboard extends BaseController
 				echo 'No vailid';
 			}
 		}
-		echo view('posts/upload_post');
+		echo view('posts/upload_post', $data);
 	}
 
 	//--------------------------------------------------------------------
