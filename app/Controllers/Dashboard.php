@@ -6,6 +6,7 @@ use App\Models\CategoriesModel;
 
 class Dashboard extends BaseController
 {
+	private $postsHome = null;
 	private $usersModel = null;
 	private $postsModel = null;
 	private $validation = null;
@@ -20,10 +21,13 @@ class Dashboard extends BaseController
 		$this->categoriesModel = new CategoriesModel;
 		$this->validation = \Config\Services::validation();
 		$this->categories = $this->categoriesModel->select(['id', 'name'])->findAll();
+		$this->postsHome = $this->postsModel->select(['title', 'intro', 'slug', 'banner', 'created_by', 'created_at'])->where('show_home', 1)->findAll();
 	}
 
 	public function index()
 	{
+		$data['categories'] = $this->categories;
+		$data['postsHome'] = $this->postsHome;
 		/*$id = $this->usersModel->insert([
 			'name'		=> 'Cesar',
 			'username'  => 'devcesar',
@@ -35,7 +39,7 @@ class Dashboard extends BaseController
 		print_r($id);
 		echo "</pre>";*/
 
-		$this->loadViews('index');
+		$this->loadViews('index', $data);
 	}
 
 	public function insertPost()
@@ -58,6 +62,7 @@ class Dashboard extends BaseController
 	public function uploadPost()
 	{
 		$data['categories'] = $this->categories;
+		$data['postsHome'] = $this->postsHome;
 		$this->validation->setRules(
 			['title' => 'required', 'intro' => 'required', 'content' => 'required|min_length[50]', 'category' => 'required', 'tags' => 'required', 'banner' => 'required|is_image',],
 			['title' => ['required' => 'Es necesario tener un titulo'],	'intro' => ['required' => 'Es necesaro un intro'], 'content' => ['required' => 'Es necesario un contenido', 'min_length' => 'El contenido debe ser de minimo 50 caracteres'], 'category' => ['required' => 'Por favor escoga una categoria'], 'tags' => ['required' => 'Es necesario una etiqueta por minimo'], 'banner' => ['required' => 'Es necesario una imagen para el post', 'is_image' => 'Debe subir un archivo de imagen para el banner']]
