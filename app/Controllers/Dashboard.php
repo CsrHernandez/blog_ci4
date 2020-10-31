@@ -3,6 +3,7 @@
 use App\Models\UsersModel;
 use App\Models\PostsModel;
 use App\Models\CategoriesModel;
+use App\Models\DBAllModel;
 
 class Dashboard extends BaseController
 {
@@ -11,6 +12,7 @@ class Dashboard extends BaseController
 	private $postsModel = null;
 	private $validation = null;
 	private $categories = null;
+	private $dbAllModel = null;
 	private $categoriesModel = null;
 
 	public function __construct()
@@ -18,10 +20,12 @@ class Dashboard extends BaseController
 		helper(['url', 'form']);
 		$this->usersModel = new UsersModel;
 		$this->postsModel = new PostsModel;
+		$this->dbAllModel = new dbAllModel;
 		$this->categoriesModel = new CategoriesModel;
 		$this->validation = \Config\Services::validation();
 		$this->categories = $this->categoriesModel->select(['id', 'name'])->findAll();
-		$this->postsHome = $this->postsModel->select(['title', 'intro', 'slug', 'banner', 'created_by', 'created_at'])->where('show_home', 1)->findAll();
+		$this->postsHome = $this->dbAllModel->getShowPostsHome();
+		//$this->postsHome = $this->postsModel->select(['title', 'intro', 'slug', 'banner', 'created_by', 'created_at'])->where('show_home', 1)->findAll();
 	}
 
 	public function index()

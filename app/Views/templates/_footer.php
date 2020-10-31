@@ -10,13 +10,13 @@
               <div class="block-1-2 block-m-full popular__posts">
                   <?php foreach ($postsHome as $post): ?>
                   <article class="col-block popular__post">
-                      <a href="<?= base_url().'/post/'.$post['slug']; ?>" class="popular__thumb">
+                      <a href="<?= base_url().'/post/'.$post->slug; ?>" class="popular__thumb">
                           <img src="<?= base_url(); ?>/images/thumbs/small/tulips-150.jpg" alt="">
                       </a>
-                      <h5><?= $post['title']; ?>.</h5>
+                      <h5><?= $post->title; ?>.</h5>
                       <section class="popular__meta">
-                          <span class="popular__author"><span>Por</span> <a href="#0"><?= $post['created_by']; ?></a></span>
-                          <span class="popular__date"><span>el</span> <time datetime="2018-06-14"><?= date('d-m-Y',strtotime($post['created_at'])); ?></time></span>
+                          <span class="popular__author"><span>Por</span> <a href="#0"><?= $post->name; ?></a></span>
+                          <span class="popular__date"><span>el</span> <time datetime="2018-06-14"><?= date('d-m-Y',strtotime($post->created_at)); ?></time></span>
                       </section>
                   </article>
                   <?php endforeach; ?>
