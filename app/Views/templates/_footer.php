@@ -78,11 +78,11 @@
                   <p>Sit vel delectus amet officiis repudiandae est voluptatem. Tempora maxime provident nisi et fuga et enim exercitationem ipsam. Culpa consequatur occaecati.</p>
 
                   <div class="subscribe-form">
-                      <form id="mc-form" class="group" novalidate="true">
+                      <form action="<?= base_url('dashboard/addNewsletter'); ?>" id="mc-form" class="group" novalidate="true" method="post">
 
-                          <input type="email" value="" name="EMAIL" class="email" id="mc-email" placeholder="Email Address" required="">
+                          <input type="email" value="" name="email" class="email" id="mc-email" placeholder="Email Address" required="">
 
-                          <input type="submit" name="subscribe" value="Send">
+                          <input type="submit" value="Send">
 
                           <label for="mc-email" class="subscribe-message"></label>
 

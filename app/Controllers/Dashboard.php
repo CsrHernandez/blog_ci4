@@ -4,6 +4,7 @@ use App\Models\UsersModel;
 use App\Models\PostsModel;
 use App\Models\CategoriesModel;
 use App\Models\DBAllModel;
+use App\Models\NewsletterModel;
 
 class Dashboard extends BaseController
 {
@@ -14,6 +15,7 @@ class Dashboard extends BaseController
 	private $categories = null;
 	private $dbAllModel = null;
 	private $categoriesModel = null;
+	private $newsletterModel = null;
 
 	public function __construct()
 	{
@@ -22,6 +24,7 @@ class Dashboard extends BaseController
 		$this->postsModel = new PostsModel;
 		$this->dbAllModel = new dbAllModel;
 		$this->categoriesModel = new CategoriesModel;
+		$this->newsletterModel = new NewsletterModel;
 		$this->validation = \Config\Services::validation();
 		$this->categories = $this->categoriesModel->select(['id', 'name'])->findAll();
 		$this->postsHome = $this->dbAllModel->getShowPostsHome();
@@ -87,6 +90,19 @@ class Dashboard extends BaseController
 
 		}
 		$this->loadViews('posts/upload_post', $data);
+	}
+
+	public function addNewsletter()
+	{
+		// code...
+		if($this->newsletterModel->insert($_POST))
+		{
+			echo "suscrito con exito";
+		}
+		else
+		{
+			echo "error al suscribirte";
+		}
 	}
 
 	//--------------------------------------------------------------------
