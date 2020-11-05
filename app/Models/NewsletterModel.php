@@ -10,7 +10,7 @@ class NewsletterModel extends Model
     protected $table      = 'newsletter';
     protected $primaryKey = 'id';
 
-    protected $retunType      = 'object';
+    protected $retunType      = 'objet';
     protected $useSoftDeletes = true;
 
     protected $allowedFields = ['email'];
@@ -20,8 +20,15 @@ class NewsletterModel extends Model
 
     function new_suscriptor()
     {
-        $data = $_POST['email'];
-        $resutl = $this->db->table($this->table)->insert($data);
-        return $resutl?true:false;
+        $email = $_POST['email'];
+        $builder = $this->db->table($this->table);
+        $query = $builder->select(['email'])->where('email', $email)->get();
+        $results = $query->getResult();
+        if(count($results) == 0)
+        {
+            $resutl = $builder->insert($data);
+            return $resutl?true:false;
+        }
+        return false;
     }
 }

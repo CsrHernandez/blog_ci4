@@ -95,13 +95,14 @@ class Dashboard extends BaseController
 	public function addNewsletter()
 	{
 		// code...
-		if($this->newsletterModel->insert($_POST))
+		//if($this->newsletterModel->insert($_POST))
+		if ($this->newsletterModel->new_suscriptor())
 		{
 			echo "suscrito con exito";
 		}
 		else
 		{
-			echo "error al suscribirte";
+			echo "Ya se cuenta con registro de su correro";
 		}
 	}
 

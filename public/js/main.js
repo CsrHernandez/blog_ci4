@@ -268,10 +268,11 @@
                     data        : formData,
                     url         : 'http://localhost:8080/dashboard/addNewsletter',
                     error: function(response){
-                        alert('Ya se cuenta con registro de su correro');
+                        alert('Error en el servidor intentalo de nuevo.');
+                        console.log(response);
                     },
                     success: function(response){
-                        alert('Se registro con exito');
+                        alert(response);
                         console.log(response);
                     }
                 });
