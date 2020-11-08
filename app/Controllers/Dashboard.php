@@ -89,11 +89,15 @@ class Dashboard extends BaseController
 	{
 		if ($slug != null && $id != null)
 		{
+			$data['categories'] = $this->categories;
+			$data['postsHome'] = $this->postsHome;
 			$data['post'] = $this->postsModel->select('posts.id, title, banner, content, tags, posts.created_at, name')
 											 ->where('slug', $slug)
 							 			 	 ->where('posts.id', $id)
 							 			 	 ->join('users', 'users.id = created_by')
 							 			 	 ->first();
+
+			$this->loadViews('posts/single-standard', $data);
 		}
 		else
 		{
