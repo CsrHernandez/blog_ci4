@@ -28,24 +28,12 @@ class Dashboard extends BaseController
 		$this->validation = \Config\Services::validation();
 		$this->categories = $this->categoriesModel->select(['id', 'name'])->findAll();
 		$this->postsHome = $this->dbAllModel->getShowPostsHome();
-		//$this->postsHome = $this->postsModel->select(['title', 'intro', 'slug', 'banner', 'created_by', 'created_at'])->where('show_home', 1)->findAll();
 	}
 
 	public function index()
 	{
 		$data['categories'] = $this->categories;
 		$data['postsHome'] = $this->postsHome;
-		/*$id = $this->usersModel->insert([
-			'name'		=> 'Cesar',
-			'username'  => 'devcesar',
-			'password'  => '1234',
-			'role' 		=> 1,
-		]);
-
-		echo "<pre>";
-		print_r($id);
-		echo "</pre>";*/
-
 		$this->loadViews('index', $data);
 	}
 
@@ -76,13 +64,18 @@ class Dashboard extends BaseController
 			['title' => ['required' => 'Es necesario tener un titulo'],	'intro' => ['required' => 'Es necesaro un intro'], 'content' => ['required' => 'Es necesario un contenido', 'min_length' => 'El contenido debe ser de minimo 50 caracteres'], 'category' => ['required' => 'Por favor escoga una categoria'], 'tags' => ['required' => 'Es necesario una etiqueta por minimo'], 'banner' => ['required' => 'Es necesario una imagen para el post', 'is_image' => 'Debe subir un archivo de imagen para el banner']]
 		);
 
-		if ($_POST) {
-			if (!$this->validation->withRequest($this->request)->run()) {
+		if ($_POST)
+		{
+			if (!$this->validation->withRequest($this->request)->run())
+			{
 				print_r($this->validation->getErrors());
-			} else {
+			}
+			else
+			{
 				$file = $this->request->getFile('banner');
 				$fileName = $file->getRandomName();
-				if ($file->isValid()) {
+				if ($file->isValid())
+				{
 					$file->move(WRITEPATH.'uploads', $fileName);
 					echo 'Archivo subido con exito';
 				}
@@ -92,12 +85,30 @@ class Dashboard extends BaseController
 		$this->loadViews('posts/upload_post', $data);
 	}
 
+	public function post($slug = null, $id = null)
+	{
+		if ($slug != null && $id != null)
+		{
+			$data['post'] = $this->postsModel->select('posts.id, title, banner, content, tags, posts.created_at, name')
+											 ->where('slug', $slug)
+							 			 	 ->where('posts.id', $id)
+							 			 	 ->join('users', 'users.id = created_by')
+							 			 	 ->first();
+		}
+		else
+		{
+			echo $slug;
+			echo $id;
+		}
+	}
+
 	public function addNewsletter()
 	{
-		// code...
-		//if($this->newsletterModel->insert($_POST))
-		if ($this->newsletterModel->new_suscriptor())
+		$email = $_POST['email'];
+		$result = $this->newsletterModel->where('email', $email)->countAllResults();
+		if ($result == 0)
 		{
+			$this->newsletterModel->insert(['email' => $email]);
 			echo "suscrito con exito";
 		}
 		else

@@ -16,19 +16,6 @@ class NewsletterModel extends Model
     protected $allowedFields = ['email'];
 
     protected $createdField = 'created_at';
-    protected $deletedField = 'delected_at';
+    protected $deletedField = 'deleted_at';
 
-    function new_suscriptor()
-    {
-        $email = $_POST['email'];
-        $builder = $this->db->table($this->table);
-        $query = $builder->select(['email'])->where('email', $email)->get();
-        $results = $query->getResult();
-        if(count($results) == 0)
-        {
-            $resutl = $builder->insert($data);
-            return $resutl?true:false;
-        }
-        return false;
-    }
 }
