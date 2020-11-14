@@ -13,7 +13,7 @@ class PostsModel extends Model
     protected $retunType      = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['banner', 'title', 'intro', 'content', 'category', 'tags', 'created_by'];
+    protected $allowedFields = ['banner', 'title', 'slug', 'intro', 'content', 'category', 'tags', 'created_by'];
 
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';

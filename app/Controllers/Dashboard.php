@@ -37,38 +37,20 @@ class Dashboard extends BaseController
 		$this->loadViews('index', $data);
 	}
 
-	public function insertPost()
-	{
-		$id = $this->postsModel->insert([
-			'banner'	 => 'img.php',
-			'title'		 => 'New Post',
-			'intro'	 	 => 'Hello this is me',
-			'slug'		 => 'new-post-12',
-			'content'	 => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-			'category'   => 1,
-			'tags'		 => 'sports',
-			'created_by' => 1
-		]);
-
-		echo "<pre>";
-		print_r($id);
-		echo "</pre>";
-	}
-
 	public function uploadPost()
 	{
 		$data['categories'] = $this->categories;
 		$data['postsHome'] = $this->postsHome;
 		$this->validation->setRules(
-			['title' => 'required', 'intro' => 'required', 'content' => 'required|min_length[50]', 'category' => 'required', 'tags' => 'required', 'banner' => 'required|is_image',],
-			['title' => ['required' => 'Es necesario tener un titulo'],	'intro' => ['required' => 'Es necesaro un intro'], 'content' => ['required' => 'Es necesario un contenido', 'min_length' => 'El contenido debe ser de minimo 50 caracteres'], 'category' => ['required' => 'Por favor escoga una categoria'], 'tags' => ['required' => 'Es necesario una etiqueta por minimo'], 'banner' => ['required' => 'Es necesario una imagen para el post', 'is_image' => 'Debe subir un archivo de imagen para el banner']]
+			['title' => 'required', 'intro' => 'required', 'content' => 'required|min_length[50]', 'category' => 'required', 'tags' => 'required'],
+			['title' => ['required' => 'Es necesario tener un titulo'], 'intro' => ['required' => 'Es necesaro un intro'], 'content' => ['required' => 'Es necesario un contenido', 'min_length' => 'El contenido debe ser de minimo 50 caracteres'], 'category' => ['required' => 'Por favor escoga una categoria'], 'tags' => ['required' => 'Es necesario una etiqueta por minimo']]
 		);
 
 		if ($_POST)
 		{
 			if (!$this->validation->withRequest($this->request)->run())
 			{
-				print_r($this->validation->getErrors());
+				return print_r($this->validation->getErrors());
 			}
 			else
 			{
@@ -77,6 +59,15 @@ class Dashboard extends BaseController
 				if ($file->isValid())
 				{
 					$file->move(WRITEPATH.'uploads', $fileName);
+					$this->postsModel->insert([
+						'title' => $this->request->getPost('title'),
+						'slug' => $this->request->getPost('title') . '-' . date('d-m-Y'),
+						'intro' => $this->request->getPost('intro'),
+						'content' => $this->request->getPost('content'),
+						'category' => $this->request->getPost('category'),
+						'tags' => $this->request->getPost('tags'),
+						'banner' => $fileName,
+					]);
 					echo 'Archivo subido con exito';
 				}
 			}
