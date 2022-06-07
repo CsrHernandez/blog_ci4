@@ -5,6 +5,7 @@ use App\Models\PostsModel;
 use App\Models\CategoriesModel;
 use App\Models\DBAllModel;
 use App\Models\NewsletterModel;
+use App\Models\CommentsModel;
 
 class Dashboard extends BaseController
 {
@@ -58,7 +59,8 @@ class Dashboard extends BaseController
 				$fileName = $file->getRandomName();
 				if ($file->isValid())
 				{
-					$file->move(WRITEPATH.'uploads', $fileName);
+					//$file->move(WRITEPATH.'uploads', $fileName);
+					$file->move(ROOTPATH.'public/images/post', $fileName);
 					$this->postsModel->insert([
 						'title' => $this->request->getPost('title'),
 						'slug' => $this->request->getPost('title') . '-' . date('d-m-Y'),
@@ -78,11 +80,35 @@ class Dashboard extends BaseController
 
 	public function post($slug = null, $id = null)
 	{
-		if ($slug != null && $id != null)
+		if ($slug && $id)
 		{
+			$commentsModel = new CommentsModel();
+			$data['comments'] = $commentsModel->where('post_id', $id)->findAll();
+			if($_POST){
+				$this->validation->setRules([
+					'cName' => 'required', 'cEmail' => 'required', 'cMessage' => 'required|min_length[15]'
+				],[
+					'cName' => ['required' => 'El nombre es necesario.'],
+					'cEmail' => ['required' => 'El email es necesario.'],
+					'cMessage' => ['required'=>'El commentario es necesario.', 'min_length' => 'La longitud minima del comentario debe ser de 15'],
+				]);
+				if (!$this->validation->withRequest($this->request)->run()) {
+					echo 'error';
+					$data['error'] = True;
+				} else {
+					echo 'success';
+					$comment_data = [
+						'name' => $_POST['cName'],
+						'email' => $_POST['cEmail'],
+						'comment' => $_POST['cMessage'],
+						'post_id' => $id,
+					];
+					$commentsModel->insert($comment_data);
+				}
+			}
 			$data['categories'] = $this->categories;
 			$data['postsHome'] = $this->postsHome;
-			$data['post'] = $this->postsModel->select('posts.id, title, banner, content, tags, posts.created_at, name')
+			$data['post'] = $this->postsModel->select('posts.id, title, banner, content, category, tags, posts.created_at, name')
 											 ->where('slug', $slug)
 							 			 	 ->where('posts.id', $id)
 							 			 	 ->join('users', 'users.id = created_by')

@@ -10,7 +10,7 @@
               <div class="block-1-2 block-m-full popular__posts">
                   <?php foreach ($postsHome as $post): ?>
                   <article class="col-block popular__post">
-                      <a href="<?= base_url().'/post/'.$post->slug; ?>" class="popular__thumb">
+                      <a href="<?= base_url().'/dashboard/post/'.$post->slug.'/'.$post->Id; ?>" class="popular__thumb">
                           <img src="<?= base_url(); ?>/images/thumbs/small/tulips-150.jpg" alt="">
                       </a>
                       <h5><?= $post->title; ?>.</h5>
