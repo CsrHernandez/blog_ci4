@@ -92,7 +92,7 @@
                     <a href="#0" title="">Categories</a>
                     <ul class="sub-menu">
                         <?php foreach ($categories as $category): ?>
-                            <li><a href="<?= base_url( 'categorias/'.$category['name'] ); ?>"><?= $category['name']; ?></a></li>
+                            <li><a href="<?= base_url( 'dashboard/categories/'.$category['name'] ); ?>"><?= $category['name']; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>

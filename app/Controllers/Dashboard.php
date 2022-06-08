@@ -138,6 +138,16 @@ class Dashboard extends BaseController
 		}
 	}
 
+	public function categories($name)
+	{
+		$data['categories'] = $this->categories;
+		$data['postsHome'] = $this->postsHome;
+		$data['name'] = $name;
+		$category = $this->categoriesModel->where('name', $name)->first();
+		$data['posts'] = $this->postsModel->where('category', $category['Id'])->findAll();
+		$this->loadViews('category', $data);
+	}
+
 	//--------------------------------------------------------------------
     # remotemysql@gmajs.net
 }

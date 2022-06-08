@@ -83,7 +83,7 @@ code {
                     <h5>Posted In: </h5>
 
                     <span class="entry__tax-list">
-                        <a href="<?= base_url()."/categories/".$categories[$post['category']]['name']; ?>"><?= $categories[$post['category']]['name']; ?></a>
+                        <a href="<?= base_url()."/dashboard/categories/".$categories[$post['category']]['name']; ?>"><?= $categories[$post['category']]['name']; ?></a>
                     </span>
                 </div> <!-- end entry__cat -->
 
